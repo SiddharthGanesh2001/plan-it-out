@@ -5,13 +5,14 @@ import { EventModel } from "./event-model";
 class EventCollection extends Collection {
     constructor() {
         super();
+        this.limit = 25;
     }
     get ModelClass() {
         return EventModel;
     }
 
     parse(response) {
-        response.map((event) => ({
+        return response.map((event) => ({
             category: event.category,
             description: event.description,
             id: event.eventId,
@@ -32,7 +33,7 @@ class EventCollection extends Collection {
 
     async fetchMyEvents() {
         const response = await fetch(`${FETCH_URL}/getEvents?userId=${ConfigHolder.userId}&mode=2`)
-        super.this.parse(await response.json());
+        this.parse(await response.json());
         return super.getAll();
     }
 }

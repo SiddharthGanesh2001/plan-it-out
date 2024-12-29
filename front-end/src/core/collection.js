@@ -17,7 +17,7 @@ class Collection {
     }
 
     static getInstance() {
-        if (this.instance === null) {
+        if (this.instance === undefined) {
             this.instance = new this();
         }
         return this.instance;
@@ -29,9 +29,9 @@ class Collection {
 
     add(models, index) {
         if (index) {
-            return {};
+            return {}; // TODO
         }
-        this.store.push(this.instantiateModels(models));
+        this.store.push(...this.instantiateModels(models));
     }
 
     remove(item) {
