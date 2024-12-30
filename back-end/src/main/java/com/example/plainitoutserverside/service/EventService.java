@@ -42,7 +42,7 @@ public class EventService {
     }
 
     public Event updateEvent(int eventId, String eventDescription, int totalCount, String location) throws SQLException {
-        return eventRepo.updateEvent(eventId, eventDescription, location, totalCount);
+        return eventRepo.updateEventRepo(eventId, eventDescription, location, totalCount);
     }
 
     public void joinEvent(int eventId, int userId){
