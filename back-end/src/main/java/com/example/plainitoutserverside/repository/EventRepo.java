@@ -111,7 +111,7 @@ public class EventRepo {
         }
     }
 
-    public Event updateEvent(int eventId, String eventDescription, String eventLocation, Integer eventTotalCount) throws SQLException {
+    public Event updateEventRepo(int eventId, String eventDescription, String eventLocation, Integer eventTotalCount) throws SQLException {
         StringBuilder sql = new StringBuilder("UPDATE EventList SET ");
         List<Object> params = new ArrayList<>();
         if (eventDescription != null) {
