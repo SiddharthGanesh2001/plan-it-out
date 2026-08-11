@@ -1,0 +1,30 @@
+@import "./styles/variables.scss";
+@import "./styles/mixins.scss";
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: $logo-height;
+  pointer-events: none;
+
+  // Animation applied conditionally based on media query
+  @media (prefers-reduced-motion: no-preference) {
+    @include rotate-animation($spin-duration, linear);
+  }
+}
+
+.App-header {
+  background-color: $background-color;
+  min-height: 100vh;
+  @include flex-center;
+  flex-direction: column;
+  @include dynamic-font-size($header-font-size);
+  color: $text-color;
+}
+
+.App-link {
+  color: $link-color;
+}
+

@@ -1,0 +1,27 @@
+// mixins.scss
+
+// Flex Center Mixin
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  // Font Size Mixin (can use dynamic input parameters)
+  @mixin dynamic-font-size($size) {
+    font-size: $size;
+  }
+  
+  // Animation Mixin
+  @mixin rotate-animation($duration, $timing) {
+    @keyframes App-logo-spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    animation: App-logo-spin infinite $duration $timing;
+  }
+   
