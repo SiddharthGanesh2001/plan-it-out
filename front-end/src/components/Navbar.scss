@@ -3,14 +3,14 @@
     gap: 16px;
 
     .nav-button {
-        font-family: 'Montserrat', sans-serif;
+        font-family: 'Hanken Grotesk', sans-serif;
         font-weight: 600;
         text-transform: none;
         padding: 6px 12px;
         transition: border-color 0.3s ease-in-out;
 
         &:hover {
-            background-color: #FFDD441A;
+            background-color: rgba(239, 233, 221, 0.12);
         }
     }
 }

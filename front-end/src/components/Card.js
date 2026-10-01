@@ -148,50 +148,78 @@ function Card({
             <MUCard
                 sx={{
                     width: maxWidth,
+                    maxWidth: "100%",
+                    display: "flex",
                     position: "relative",
-                    overflow: "hidden",
-                    transition: "all 0.3s ease-in-out"
+                    overflow: "visible",
+                    bgcolor: "background.paper",
+                    border: "1px solid",
+                    borderColor: "divider",
+                    boxShadow: "2px 3px 0 rgba(28,25,23,0.12)"
                 }}
             >
-                <CardMedia
-                    component="img"
-                    image={IMG[category] || img}
-                    alt="category image"
-                    height={360}
-                    sx={{
-                        objectFit: "contain",
-                        transition: "all 0.3s ease-in-out"
-                    }}
-                />
+                {/* left: duotone image panel (placement B) */}
+                <Box sx={{ position: "relative", width: 150, flexShrink: 0, overflow: "hidden" }}>
+                    <CardMedia
+                        component="img"
+                        image={IMG[category] || img}
+                        alt="category image"
+                        sx={{ height: "100%", width: "100%", objectFit: "cover", filter: "grayscale(1) contrast(1.05)" }}
+                    />
+                    <Box sx={{ position: "absolute", inset: 0, bgcolor: "primary.main", mixBlendMode: "multiply", opacity: 0.55 }} />
+                </Box>
 
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                {/* middle: content */}
+                <Box sx={{ flex: 1, minWidth: 0, p: 2 }}>
+                    {category && (
+                        <Box sx={{
+                            display: "inline-block",
+                            border: "1.5px solid", borderColor: "secondary.main",
+                            bgcolor: "secondary.main", color: "#fff",
+                            fontFamily: '"Bebas Neue", sans-serif', letterSpacing: "0.1em",
+                            fontSize: "0.85rem", lineHeight: 1.4, px: 1,
+                            transform: "rotate(-3deg)"
+                        }}>
+                            {category}
+                        </Box>
+                    )}
+                    <Typography sx={{
+                        fontFamily: '"Bebas Neue", sans-serif', textTransform: "uppercase",
+                        fontSize: "1.7rem", lineHeight: 1, letterSpacing: "0.01em", mt: 1
+                    }}>
                         {title}
                     </Typography>
-                    <Typography variant="body2">
+                    {eventDetails?.hostName && (
+                        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
+                            Hosted by {eventDetails.hostName}
+                        </Typography>
+                    )}
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                         {desc}
                     </Typography>
-                </CardContent>
-                <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-                    {actionButtons()}
-                    <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-                        <IconButton onClick={onGuestListClick}>
-                            <PeopleIcon />
-                        </IconButton>
-                        <Typography variant="body2" sx={{ mb: 1 }}>
+                </Box>
+
+                {/* vertical perforation */}
+                <Box sx={{ position: "relative", borderLeft: "2px dashed", borderColor: "divider" }}>
+                    <Box sx={{ position: "absolute", top: -9, left: -9, width: 16, height: 16, borderRadius: "50%", bgcolor: "background.default", border: "1px solid", borderColor: "divider" }} />
+                    <Box sx={{ position: "absolute", bottom: -9, left: -9, width: 16, height: 16, borderRadius: "50%", bgcolor: "background.default", border: "1px solid", borderColor: "divider" }} />
+                </Box>
+
+                {/* right: stub */}
+                <Box sx={{ width: 104, flexShrink: 0, p: 1.5, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", gap: 1, textAlign: "center" }}>
+                    <Box sx={{ cursor: "pointer" }} onClick={onGuestListClick}>
+                        <Typography sx={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: "0.6rem", letterSpacing: "0.1em", color: "text.secondary" }}>
+                            GOING
+                        </Typography>
+                        <Typography sx={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: "1.6rem", lineHeight: 1, color: "primary.main" }}>
                             {joinedCount}/{totalCount}
                         </Typography>
                     </Box>
-                    <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={onExpand}
-                        startIcon={<InfoIcon />}
-                    >
+                    {actionButtons()}
+                    <Button size="small" variant="text" onClick={onExpand} startIcon={<InfoIcon />} sx={{ minWidth: 0 }}>
                         Details
                     </Button>
-                </CardActions>
-
+                </Box>
             </MUCard>
         </>
     );

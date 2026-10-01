@@ -7,8 +7,6 @@ import { AppBar as MUAppBar } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "./Navbar.scss";
 
-import logo from "../assets/images/logo.png";
-
 // const auth = true;
 
 const Search = styled("div")(({ theme }) => ({
@@ -52,10 +50,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const activeLinkStyle = {
-    borderBottom: "3px solid #fff", 
-    color: "white",
+    borderBottom: "3px solid #C8321F",
+    color: "#fff",
     fontWeight: "bold",
-    backgroundColor: "#3B4A7A",
+    borderRadius: 0,
 };
 
 const Navbar = () => {
@@ -70,12 +68,17 @@ const Navbar = () => {
     };
 
     return (
-        <MUAppBar position="static" sx={{ backgroundColor: "#2E3B55" }}>
+        <MUAppBar position="static" sx={{ backgroundColor: "#1C1917" }}>
             <Toolbar sx={{ justifyContent: "center" }}>
                 <IconButton edge="start" color="inherit" aria-label="logo" onClick={() => navigate("/discover-events")} sx={{ ml: 2 }}>
-                    <img src={logo} alt="logo" style={{ height: 40, width: 40 }} /> 
+                    <svg width="51" height="34" viewBox="0 0 90 60" aria-hidden="true">
+                        <rect x="3" y="6" width="84" height="48" rx="6" fill="#efe9dd" />
+                        <line x1="64" y1="12" x2="64" y2="48" stroke="#1c1917" strokeWidth="2" strokeDasharray="3 4" />
+                        <text x="33" y="43" textAnchor="middle" fontFamily="'Bebas Neue', sans-serif" fontSize="40" fill="#1c1917">P</text>
+                        <path d="M76 22 l2.4 4.9 l5.4 .8 l-3.9 3.8 l.9 5.4 l-4.8 -2.5 l-4.8 2.5 l.9 -5.4 l-3.9 -3.8 l5.4 -.8 z" fill="#c8321f" />
+                    </svg>
                 </IconButton>
-                <Typography variant="h6" component="div" sx={{ cursor: "pointer", fontFamily: "Montserrat, sans-serif", fontWeight: "700" }} onClick={() => navigate("/discover-events")}>
+                <Typography variant="h6" component="div" sx={{ cursor: "pointer", fontFamily: '"Bebas Neue", sans-serif', fontWeight: 400, fontSize: "1.7rem", letterSpacing: "0.06em" }} onClick={() => navigate("/discover-events")}>
                     Plan-It-Out
                 </Typography>
 
@@ -95,7 +98,7 @@ const Navbar = () => {
                     <Button
                         component={NavLink}
                         to="/discover-events"
-                        variant="outlined"
+                        variant="text"
                         color="inherit"
                         startIcon={<Explore />} 
                         style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
@@ -106,7 +109,7 @@ const Navbar = () => {
                     <Button
                         component={NavLink}
                         to="/create-event"
-                        variant="outlined"
+                        variant="text"
                         color="inherit"
                         startIcon={<AddCircleOutline />} 
                         sx={{ mx: 2 }}
@@ -118,7 +121,7 @@ const Navbar = () => {
                     <Button
                         component={NavLink}
                         to="/my-events"
-                        variant="outlined"
+                        variant="text"
                         color="inherit"
                         startIcon={<CalendarToday />} 
                         sx={{ mr: 2 }} 
@@ -151,7 +154,7 @@ const Navbar = () => {
                     onClose={toggleDrawer(false)}
                     sx={{
                         "& .MuiDrawer-paper": {
-                            backgroundColor: "#2E3B55", // Matches Navbar color
+                            backgroundColor: "#1C1917", // Matches Navbar color
                             color: "white", // Text color
                             width: 250, // Width of the drawer
                         },

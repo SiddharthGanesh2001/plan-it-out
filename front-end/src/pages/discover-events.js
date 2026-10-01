@@ -9,15 +9,29 @@ import { useDialogs } from "@toolpad/core";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { EventCollection } from "../core/event-collection";
 
+const ticketTabSx = {
+    borderRadius: 0,
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
+    fontFamily: '"IBM Plex Mono", monospace',
+    fontWeight: 500,
+    fontSize: "0.78rem",
+    padding: "8px 6px",
+    flexShrink: 0,
+};
+
 function DiscoverEvents() {
     const [events, setEvents] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [expandedEventId, setExpandedEventId] = useState(null);
+    const [loading, setLoading] = useState(true);
     const dialogs = useDialogs();
 
     async function fetchDiscoverEvents() {
+        setLoading(true);
         const response = await fetch(`${FETCH_URL}/getEvents?userId=${ConfigHolder.userId}&mode=1`);
         setEvents(await response.json());
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -35,8 +49,10 @@ function DiscoverEvents() {
             if (selectedCategory === "All") {
                 return fetchDiscoverEvents();
             }
+            setLoading(true);
             const response = await fetch(`${FETCH_URL}/getEvents?userId=${ConfigHolder.userId}&mode=1&filterId=1&filter=${selectedCategory}`);
             setEvents(await response.json());
+            setLoading(false);
         }
         filter();
     }, [selectedCategory]);
@@ -162,7 +178,7 @@ function DiscoverEvents() {
 
     function renderActionButtons(event) {
         return (
-            <Button variant="outlined" size="small" color="success" onClick={() => handleJoin(event)} startIcon={<LoginIcon />}>
+            <Button variant="contained" size="small" onClick={() => handleJoin(event)} startIcon={<LoginIcon />} sx={{ bgcolor: "#EA580C", color: "#fff", "&:hover": { bgcolor: "#C2410C" } }}>
                 Join
             </Button>
         );
@@ -205,42 +221,69 @@ function DiscoverEvents() {
                     label="All"
                     onClick={() => setSelectedCategory("All")}
                     color={selectedCategory === "All" ? "primary" : "default"}
-                    sx={{ fontWeight: "bold", padding: "10px 20px", fontSize: "1rem", flexShrink: 0 }} 
+                    variant={selectedCategory === "All" ? "filled" : "outlined"}
+                    sx={ticketTabSx}
                 />
                 {CATEGORIES.map((category) => (
                     <Chip
                         key={category}
-                        label={category.charAt(0).toUpperCase() + category.slice(1)}
+                        label={category}
                         onClick={() => setSelectedCategory(category)}
                         color={selectedCategory === category ? "primary" : "default"}
-                        sx={{ padding: "10px 20px", fontSize: "1rem", flexShrink: 0 }} 
+                        variant={selectedCategory === category ? "filled" : "outlined"}
+                        sx={ticketTabSx}
                     />
                 ))}
             </Box>
 
-            <Grid2 container spacing={3}>
-                {events.map((event) => (
-                    <Grid2 item xs={12} sm={6} md={4} key={event.eventId}>
-                        <Card
-                            title={event.eventName}
-                            desc={event.eventDescription}
-                            category={event.category}
-                            eventDetails={{
-                                location: event.location,
-                                dateTime: event.dateTime,
-                                hostName: event.hostName
-                            }}
-                            joinedCount={event.joinedCount}
-                            totalCount={event.totalCount}
-                            actionButtons={() => renderActionButtons(event)}
-                            isExpanded={expandedEventId === event.eventId}
-                            onExpand={() => handleExpand(event.eventId)}
-                            onGuestListClick={() => handleGuestListClick(event)}
-                            onClose={handleClose}
-                        />
-                    </Grid2>
-                ))}
-            </Grid2>
+            {loading ? (
+                <Typography sx={{ fontFamily: '"IBM Plex Mono", monospace', color: "text.secondary", textAlign: "center", py: 8, letterSpacing: "0.05em" }}>
+                    Loading the marquee…
+                </Typography>
+            ) : events.length === 0 ? (
+                <Box sx={{
+                    textAlign: "center",
+                    py: 8,
+                    px: 2,
+                    border: "2px dashed",
+                    borderColor: "divider",
+                    bgcolor: "background.paper",
+                    color: "text.secondary"
+                }}>
+                    <Typography sx={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: "2.6rem", lineHeight: 1, letterSpacing: "0.03em", color: "text.primary" }}>
+                        No shows on the marquee
+                    </Typography>
+                    <Typography sx={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: "0.85rem", mt: 1.5, letterSpacing: "0.05em" }}>
+                        {selectedCategory === "All"
+                            ? "Nothing on sale right now — check back soon."
+                            : `No ${selectedCategory} events yet — try another category.`}
+                    </Typography>
+                </Box>
+            ) : (
+                <Grid2 container spacing={3}>
+                    {events.map((event) => (
+                        <Grid2 size={{ xs: 12, md: 6 }} key={event.eventId}>
+                            <Card
+                                title={event.eventName}
+                                desc={event.eventDescription}
+                                category={event.category}
+                                eventDetails={{
+                                    location: event.location,
+                                    dateTime: event.dateTime,
+                                    hostName: event.hostName
+                                }}
+                                joinedCount={event.joinedCount}
+                                totalCount={event.totalCount}
+                                actionButtons={() => renderActionButtons(event)}
+                                isExpanded={expandedEventId === event.eventId}
+                                onExpand={() => handleExpand(event.eventId)}
+                                onGuestListClick={() => handleGuestListClick(event)}
+                                onClose={handleClose}
+                            />
+                        </Grid2>
+                    ))}
+                </Grid2>
+            )}
         </Container>
     );
 }
